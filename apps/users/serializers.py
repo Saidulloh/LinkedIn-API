@@ -45,12 +45,9 @@ class EducationSerializer(serializers.ModelSerializer):
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
-    work_experience = WorkExperienceSerializer(read_only=True) # Do not work
-    education = EducationSerializer(read_only=True)            # Put request
-
     class Meta:
         model = User
-        fields = fields + ['password', 'skill', 'work_experience', 'education']
+        fields = fields + ['password', 'skill']
 
     def create(self, validated_data):
         password = validated_data['password']
@@ -73,9 +70,9 @@ class UserListSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     owner = PostSerializer(read_only=True, many=True)
     favorite_owner = FavoriteSerializer(read_only=True, many=True)
+    skill = SkillsSerializer(read_only=True, many=True)
     work_experience = WorkExperienceSerializer(read_only=True, many=True)
     education = EducationSerializer(read_only=True, many=True)
-    skill = SkillsSerializer(read_only=True, many=True)
 
     class Meta:
         model = User

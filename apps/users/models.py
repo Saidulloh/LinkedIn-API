@@ -66,34 +66,22 @@ class WorkExperience(models.Model):
     """
     title = models.CharField(
         max_length=256,
-        verbose_name='title',
-        null=True,
-        blank=True
+        verbose_name='title'
     )
     from_date = models.DateTimeField(
-        auto_now=True,
-        verbose_name='from_date',
-        null=True,
-        blank=True
+        verbose_name='from_date'
     )
     to_date = models.DateTimeField(
-        auto_now=True,
-        verbose_name='to_date',
-        null=True,
-        blank=True
+        verbose_name='to_date'
     )
     description = models.TextField(
-        verbose_name='description',
-        null=True,
-        blank=True
+        verbose_name='description'
     )
     owner = models.ForeignKey(
         User,
         on_delete=models.DO_NOTHING,
         related_name='work_experience',
-        verbose_name='work_experience',
-        null=True,
-        blank=True
+        verbose_name='work_experience'
     )
 
     def __str__(self):
@@ -127,34 +115,22 @@ class Education(models.Model):
     """
     title = models.CharField(
         max_length=256,
-        verbose_name='title',
-        null=True,
-        blank=True
+        verbose_name='title'
     )
     description = models.TextField(
-        verbose_name='description',
-        null=True,
-        blank=True
+        verbose_name='description'
     )
     from_date = models.DateTimeField(
-        auto_now=True,
-        verbose_name='from_date',
-        null=True,
-        blank=True
+        verbose_name='from_date'
     )
     to_date = models.DateTimeField(
-        auto_now=True,
-        verbose_name='to_date',
-        null=True,
-        blank=True
+        verbose_name='to_date'
     )
     owner = models.ForeignKey(
         User,
         on_delete=models.DO_NOTHING,
         related_name='education',
-        verbose_name='education',
-        null=True,
-        blank=True
+        verbose_name='education'
     )
 
     def __str__(self):

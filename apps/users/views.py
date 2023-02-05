@@ -6,7 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
-from apps.users.serializers import UserCreateSerializer, UserSerializer, UserListSerializer
+from apps.users.models import WorkExperience, Education
+from apps.users.serializers import UserCreateSerializer, UserSerializer, UserListSerializer, WorkExperienceSerializer, EducationSerializer
 from apps.users.permissions import IsOwner
 from apps.contacts.models import Contact
 
@@ -60,3 +61,27 @@ class UserApiViewSet(GenericViewSet,
         if self.action == 'get':
             return UserSerializer
         return UserCreateSerializer
+
+
+class EducationApiViewSet(GenericViewSet,
+                          CreateModelMixin,
+                          UpdateModelMixin,
+                          DestroyModelMixin):
+    queryset = Education.objects.all()
+    serializer_class = EducationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        return serializer.save(owner=self.request.user)
+
+
+class WorkExperienceApiViewSet(GenericViewSet,
+                               CreateModelMixin,
+                               UpdateModelMixin,
+                               DestroyModelMixin):
+    queryset = WorkExperience.objects.all()
+    serializer_class = WorkExperienceSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        return serializer.save(owner=self.request.user)
