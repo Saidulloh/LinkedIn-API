@@ -9,7 +9,5 @@ class ContactSerializer(serializers.ModelSerializer):
         read_only_fields = ('owner',)
         fields = (
             'id',
-            'members',
             'created_at',
-            'updated_at'
         )
