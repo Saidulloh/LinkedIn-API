@@ -21,18 +21,21 @@ schema_view = get_schema_view(
       license=openapi.License(name="BSD License"),
    ),
    public=True,
-#    permission_classes=(permissions.IsAuthenticated,),
+   permission_classes=(permissions.IsAuthenticated,),
 )
 
 api_urlpatterns = [
     path('chats/', include('apps.chats.urls')),
     path('comments/', include('apps.comments.urls')),
+    path('contact_details/', include('apps.contact_details.urls')),
     path('contacts/', include('apps.contacts.urls')),
     path('favorites/', include('apps.favorites.urls')),
     path('likes/', include('apps.likes.urls')),
     path('messages/', include('apps.message.urls')),
     path('posts/', include('apps.posts.urls')),
+    path('premium/', include('apps.premium.urls')),
     path('users/', include('apps.users.urls')),
+    path('wallets/', include('apps.wallets.urls')),
 
     # authorization
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

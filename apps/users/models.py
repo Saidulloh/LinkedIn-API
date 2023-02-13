@@ -51,6 +51,14 @@ class User(AbstractUser):
         'Skills',
         verbose_name='skill'
     )
+    premium_active = models.BooleanField(
+        default=False,
+        verbose_name='premium_active'
+    )
+    wallet = models.IntegerField(
+        default=0,
+        verbose_name='wallet'
+    )
 
     def __str__(self):
         return f'{self.id} -- {self.username}'

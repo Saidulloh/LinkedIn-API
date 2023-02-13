@@ -2,12 +2,13 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin, DestroyModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import status
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 
 from apps.chats.models import Chat
 from apps.chats.serializers import ChatSerializer, ChatCreateSerializer
-from apps.contacts.models import Contact
+from apps.contact_details.models import ContactAppend
 
 
 User = get_user_model()
@@ -26,15 +27,17 @@ class ChatApiViewSet(GenericViewSet,
         return serializer.save(owner=self.request.user)
 
     def get_queryset(self):
-        queryset = Chat.objects.filter(Q(members__in=[self.request.user]) | Q(owner=self.request.user))
+        queryset = Chat.objects.filter(Q(members__in=[self.request.user]) | Q(owner=self.request.user)) # filter chats
         return queryset
     
     def destroy(self, request, *args, **kwargs):
         chat_id = kwargs['pk']
         chat = Chat.objects.get(id=chat_id)
-        if chat.members.count() == 1:
+        if chat.members.count() == 1: # if count of chat member == 1
             chat.delete()
-        chat.members.remove(request.user)
+        if request.user in chat.members.all(): # if user is a member of chat
+            chat.members.remove(request.user) # delete user of this chat
+        chat.owner = None
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -42,12 +45,14 @@ class ChatApiViewSet(GenericViewSet,
         return ChatSerializer
 
     def create(self, request, *args, **kwargs):
-        chat_members = [int(i) for i in request.data['members']]
         try:
-            contacts = Contact.objects.get(owner=request.user)
-            for contact in contacts.members.all():
-                if contact.id in chat_members:
-                    return super().create(request, *args, **kwargs)
+            chat_members = [int(i) for i in request.data['members'] if request.user != i] # get chat members
+            contacts = ContactAppend.objects.filter(owner=request.user) # get my contacts
+            contact_members = [int(i.members.id) for i in contacts] # list of contact members id
+            if set(chat_members).issubset(contact_members): # check have users in contact list
+                return super().create(request, *args, **kwargs)
+            else:
                 return Response({'Error': 'You do not have in contact list any user!'})
-        except:
-            return Response({'Error': 'You do not have in contact list any user!'})
+        except Exception as ex:
+            print(ex)
+            return Response(ex)

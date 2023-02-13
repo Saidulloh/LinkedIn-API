@@ -8,7 +8,7 @@ from apps.favorites.serializers import FavoriteSerializer
 
 User = get_user_model()
 
-fields = ['id', 'username', 'avatarka', 'bio', 'email', 'created_at', 'phone_number', 'age']
+fields = ['id', 'username', 'avatarka', 'bio', 'email', 'created_at', 'phone_number', 'age', 'premium_active']
 
 
 
@@ -63,7 +63,8 @@ class UserListSerializer(serializers.ModelSerializer):
         fields = (
             'username',
             'avatarka',
-            'last_activity'
+            'last_activity',
+            'premium_active'
         )
 
 
@@ -85,6 +86,8 @@ class UserSerializer(serializers.ModelSerializer):
             'phone_number',
             'age',
             'last_activity',
+            'premium_active',
+            'wallet',
             'password',
             'owner',
             'favorite_owner',

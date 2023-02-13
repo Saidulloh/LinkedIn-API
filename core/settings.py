@@ -31,17 +31,19 @@ ALLOWED_HOSTS = ['*']
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-# Application definition
 
 LOCAL_APPS = [
     'apps.chats',
     'apps.comments',
+    'apps.contact_details',
     'apps.contacts',
     'apps.favorites',
     'apps.likes',
     'apps.message',
     'apps.posts',
+    'apps.premium',
     'apps.users',
+    'apps.wallets',
 ]
 
 REQUIREMENTS = [
@@ -71,6 +73,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # customer middlewares
+    'utils.MiddleWares.IsActivePremiuMiddleWare'
 ]
 
 ROOT_URLCONF = 'core.urls'
